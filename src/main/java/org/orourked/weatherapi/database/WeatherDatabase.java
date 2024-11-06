@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WeatherDatabase extends MongoRepository<WeatherData, String> {
   List<WeatherData> findByLocation(String location);
-  //List<WeatherData> findAll();
 }
