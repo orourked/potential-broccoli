@@ -1,12 +1,17 @@
 package org.orourked.weatherapi.controller;
 
 import java.util.List;
+import java.util.Map;
+import org.orourked.weatherapi.dto.WeatherQueryRequest;
 import org.orourked.weatherapi.model.WeatherData;
 import org.orourked.weatherapi.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,5 +29,16 @@ public class WeatherController {
   @GetMapping("/location/{location}")
   public List<WeatherData> getWeatherDataByLocation(@PathVariable String location) {
     return weatherService.getWeatherDataByLocation((location));
+  }
+
+  @PostMapping("/query")
+  public List<Map> queryWeatherData(@RequestBody WeatherQueryRequest request) {
+    return weatherService.queryWeatherData(
+        request.getSensorIds(),
+        request.getMetrics(),
+        request.getStats(),
+        request.getStartDate(),
+        request.getEndDate()
+    );
   }
 }

@@ -48,6 +48,14 @@ public class WeatherData {
     this.humidity = humidity;
   }
 
+  public double getWindspeed() {
+    return windspeed;
+  }
+
+  public void setWindspeed(double windspeed) {
+    this.windspeed = windspeed;
+  }
+
   public double getPressure() {
     return pressure;
   }
@@ -68,6 +76,7 @@ public class WeatherData {
   private String location;
   private double temperature;
   private double humidity;
+  private double windspeed;
   private double pressure;
   private String timestamp;
 }
