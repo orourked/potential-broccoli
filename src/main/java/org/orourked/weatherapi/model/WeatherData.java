@@ -5,73 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "weatherData")
 public class WeatherData {
-  @Id
-  private String id;
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getSensorId() {
-    return sensorId;
-  }
-
-  public void setSensorId(String sensorId) {
-    this.sensorId = sensorId;
-  }
-
-  public String getLocation() {
-    return location;
-  }
-
-  public void setLocation(String location) {
-    this.location = location;
-  }
-
-  public double getTemperature() {
-    return temperature;
-  }
-
-  public void setTemperature(double temperature) {
-    this.temperature = temperature;
-  }
-
-  public double getHumidity() {
-    return humidity;
-  }
-
-  public void setHumidity(double humidity) {
-    this.humidity = humidity;
-  }
-
-  public double getWindspeed() {
-    return windspeed;
-  }
-
-  public void setWindspeed(double windspeed) {
-    this.windspeed = windspeed;
-  }
-
-  public double getPressure() {
-    return pressure;
-  }
-
-  public void setPressure(double pressure) {
-    this.pressure = pressure;
-  }
-
-  public String getTimestamp() {
-    return timestamp;
-  }
-
-  public void setTimestamp(String timestamp) {
-    this.timestamp = timestamp;
-  }
-
+  @Id private String id;
   private String sensorId;
   private String location;
   private double temperature;
@@ -79,4 +13,77 @@ public class WeatherData {
   private double windspeed;
   private double pressure;
   private String timestamp;
+
+  // Getters
+  public String getId() {
+    return id;
+  }
+
+  public String getSensorId() {
+    return sensorId;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public double getTemperature() {
+    return temperature;
+  }
+
+  public double getHumidity() {
+    return humidity;
+  }
+
+  public double getWindspeed() {
+    return windspeed;
+  }
+
+  public double getPressure() {
+    return pressure;
+  }
+
+  public String getTimestamp() {
+    return timestamp;
+  }
+
+  public WeatherData setId(String id) {
+    this.id = id;
+    return this;
+  }
+
+  public WeatherData setSensorId(String sensorId) {
+    this.sensorId = sensorId;
+    return this;
+  }
+
+  public WeatherData setLocation(String location) {
+    this.location = location;
+    return this;
+  }
+
+  public WeatherData setTemperature(double temperature) {
+    this.temperature = temperature;
+    return this;
+  }
+
+  public WeatherData setHumidity(double humidity) {
+    this.humidity = humidity;
+    return this;
+  }
+
+  public WeatherData setWindspeed(double windspeed) {
+    this.windspeed = windspeed;
+    return this;
+  }
+
+  public WeatherData setPressure(double pressure) {
+    this.pressure = pressure;
+    return this;
+  }
+
+  public WeatherData setTimestamp(String timestamp) {
+    this.timestamp = timestamp;
+    return this;
+  }
 }

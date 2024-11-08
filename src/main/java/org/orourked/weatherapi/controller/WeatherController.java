@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/weather")
 public class WeatherController {
 
-  @Autowired
-  private WeatherService weatherService;
+  @Autowired private WeatherService weatherService;
 
   @GetMapping
   public List<WeatherData> getAllWeatherData() {
@@ -37,7 +36,6 @@ public class WeatherController {
         request.getMetrics(),
         request.getStats(),
         request.getStartDate(),
-        request.getEndDate()
-    );
+        request.getEndDate());
   }
 }

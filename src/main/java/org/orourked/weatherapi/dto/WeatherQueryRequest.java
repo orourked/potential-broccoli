@@ -10,18 +10,48 @@ public class WeatherQueryRequest {
   private String endDate;
 
   // Getters and setters
-  public List<String> getSensorIds() { return sensorIds; }
-  public void setSensorIds(List<String> sensorIds) { this.sensorIds = sensorIds; }
+  public List<String> getSensorIds() {
+    return sensorIds;
+  }
 
-  public List<String> getMetrics() { return metrics; }
-  public void setMetrics(List<String> metrics) { this.metrics = metrics; }
+  public WeatherQueryRequest setSensorIds(List<String> sensorIds) {
+    this.sensorIds = sensorIds;
+    return this;
+  }
 
-  public List<String> getStats() { return stats; }
-  public void setStats(List<String> stats) { this.stats = stats; }
+  public List<String> getMetrics() {
+    return metrics;
+  }
 
-  public String getStartDate() { return startDate; }
-  public void setStartDate(String startDate) { this.startDate = startDate; }
+  public WeatherQueryRequest setMetrics(List<String> metrics) {
+    this.metrics = metrics;
+    return this;
+  }
 
-  public String getEndDate() { return endDate; }
-  public void setEndDate(String endDate) { this.endDate = endDate; }
+  public List<String> getStats() {
+    return stats;
+  }
+
+  public WeatherQueryRequest setStats(List<String> stats) {
+    this.stats = stats;
+    return this;
+  }
+
+  public String getStartDate() {
+    return startDate;
+  }
+
+  public WeatherQueryRequest setStartDate(String startDate) {
+    this.startDate = startDate;
+    return this;
+  }
+
+  public String getEndDate() {
+    return endDate;
+  }
+
+  public WeatherQueryRequest setEndDate(String endDate) {
+    this.endDate = endDate;
+    return this;
+  }
 }

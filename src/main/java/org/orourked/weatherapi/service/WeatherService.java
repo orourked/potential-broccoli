@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WeatherService {
-  @Autowired
-  private WeatherDatabase weatherDatabase;
+  @Autowired private WeatherDatabase weatherDatabase;
 
   public List<WeatherData> getAllWeatherData() {
     return weatherDatabase.findAll();
@@ -22,11 +21,14 @@ public class WeatherService {
     return weatherDatabase.findByLocation(location);
   }
 
+  @Autowired private WeatherAggregation weatherAggregation;
 
-  @Autowired
-  private WeatherAggregation weatherAggregation;
-
-  public List<Map> queryWeatherData(List<String> sensorIds, List<String> metrics, List<String> stats, String startDate, String endDate) {
+  public List<Map> queryWeatherData(
+      List<String> sensorIds,
+      List<String> metrics,
+      List<String> stats,
+      String startDate,
+      String endDate) {
 
     LocalDate start = startDate != null ? LocalDate.parse(startDate) : null;
     LocalDate end = endDate != null ? LocalDate.parse(endDate) : null;

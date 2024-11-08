@@ -17,39 +17,39 @@ import org.orourked.weatherapi.database.WeatherDatabase;
 import org.orourked.weatherapi.model.WeatherData;
 
 class WeatherServiceTest {
-  @Mock
-  private WeatherDatabase weatherDatabase;
+  @Mock private WeatherDatabase weatherDatabase;
 
-  @InjectMocks
-  private WeatherService weatherService;
+  @InjectMocks private WeatherService weatherService;
 
   @BeforeEach
-  void setUp(){
+  void setUp() {
     MockitoAnnotations.openMocks(this);
   }
 
   @Test
   void testGetAllWeatherData() {
     // Mock data
-    WeatherData weatherData1 = new WeatherData();
-    weatherData1.setId("1");
-    weatherData1.setSensorId("sensor1");
-    weatherData1.setLocation("New York");
-    weatherData1.setTemperature(25.0);
-    weatherData1.setHumidity(65.0);
-    weatherData1.setWindspeed(17.0);
-    weatherData1.setPressure(1013.0);
-    weatherData1.setTimestamp(String.valueOf(LocalDateTime.now().minusHours(1)));
+    WeatherData weatherData1 =
+        new WeatherData()
+            .setId("1")
+            .setSensorId("sensor1")
+            .setLocation("New York")
+            .setTemperature(25.0)
+            .setHumidity(65.0)
+            .setWindspeed(17.0)
+            .setPressure(1013.0)
+            .setTimestamp(String.valueOf(LocalDateTime.now().minusHours(1)));
 
-    WeatherData weatherData2 = new WeatherData();
-    weatherData2.setId("2");
-    weatherData2.setSensorId("sensor2");
-    weatherData2.setLocation("London");
-    weatherData2.setTemperature(15.0);
-    weatherData2.setHumidity(55.0);
-    weatherData2.setWindspeed(22.0);
-    weatherData2.setPressure(1015.0);
-    weatherData2.setTimestamp(String.valueOf(LocalDateTime.now()));
+    WeatherData weatherData2 =
+        new WeatherData()
+            .setId("2")
+            .setSensorId("sensor2")
+            .setLocation("London")
+            .setTemperature(15.0)
+            .setHumidity(55.0)
+            .setWindspeed(22.0)
+            .setPressure(1015.0)
+            .setTimestamp(String.valueOf(LocalDateTime.now()));
     List<WeatherData> mockData = Arrays.asList(weatherData1, weatherData2);
 
     // Stub the repository's behavior

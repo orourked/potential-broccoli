@@ -15,10 +15,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class WeatherAggregation {
-  @Autowired
-  private MongoTemplate mongoTemplate;
+  @Autowired private MongoTemplate mongoTemplate;
 
-  public List<Map> queryWeatherData(List<String> sensorIds, List<String> metrics, List<String> stats, LocalDate startDate, LocalDate endDate) {
+  public List<Map> queryWeatherData(
+      List<String> sensorIds,
+      List<String> metrics,
+      List<String> stats,
+      LocalDate startDate,
+      LocalDate endDate) {
 
     // Convert startDate and endDate to proper MongoDB date format if provided
     LocalDate finalStartDate = startDate != null ? startDate : LocalDate.now().minusDays(1);
@@ -28,7 +32,8 @@ public class WeatherAggregation {
     List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
     // Add match stage for date range
-    aggregationOperations.add(Aggregation.match(Criteria.where("timestamp").gte(finalStartDate).lte(finalEndDate)));
+    aggregationOperations.add(
+        Aggregation.match(Criteria.where("timestamp").gte(finalStartDate).lte(finalEndDate)));
 
     // Add match stage for sensor IDs, if specified
     if (sensorIds != null && !sensorIds.isEmpty()) {
@@ -36,7 +41,7 @@ public class WeatherAggregation {
     }
 
     // Start building the group stage
-    GroupOperation groupOperation = Aggregation.group("sensorId");  // Group
+    GroupOperation groupOperation = Aggregation.group("sensorId");
 
     for (String metric : metrics) {
       for (String stat : stats) {
