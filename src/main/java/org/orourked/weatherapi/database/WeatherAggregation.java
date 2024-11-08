@@ -1,12 +1,15 @@
 package org.orourked.weatherapi.database;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
@@ -21,19 +24,46 @@ public class WeatherAggregation {
     LocalDate finalStartDate = startDate != null ? startDate : LocalDate.now().minusDays(1);
     LocalDate finalEndDate = endDate != null ? endDate : LocalDate.now();
 
-    // Add match stage to filter by date range and sensor IDs
-    Aggregation aggregation = Aggregation.newAggregation(
-        Aggregation.match(Criteria.where("timestamp").gte(finalStartDate).lte(finalEndDate)),
-        sensorIds != null ? Aggregation.match(Criteria.where("sensorId").in(sensorIds)) : null,
+    // Create the list of aggregation stages
+    List<AggregationOperation> aggregationOperations = new ArrayList<>();
 
-        // Add aggregation stages for each metric and requested statistics
-        Aggregation.group("sensorId") // Group by sensor ID
-            .avg("temperature").as("avgTemperature")
-            .min("temperature").as("minTemperature")
-            .max("temperature").as("maxTemperature")
-            .sum("temperature").as("sumTemperature")
-        // Repeat for other metrics as needed (humidity, etc.)
-    );
+    // Add match stage for date range
+    aggregationOperations.add(Aggregation.match(Criteria.where("timestamp").gte(finalStartDate).lte(finalEndDate)));
+
+    // Add match stage for sensor IDs, if specified
+    if (sensorIds != null && !sensorIds.isEmpty()) {
+      aggregationOperations.add(Aggregation.match(Criteria.where("sensorId").in(sensorIds)));
+    }
+
+    // Start building the group stage
+    GroupOperation groupOperation = Aggregation.group("sensorId");  // Group
+
+    for (String metric : metrics) {
+      for (String stat : stats) {
+        switch (stat) {
+          case "average":
+            groupOperation = groupOperation.avg(metric).as("avg" + metric);
+            break;
+          case "max":
+            groupOperation = groupOperation.max(metric).as("max" + metric);
+            break;
+          case "min":
+            groupOperation = groupOperation.min(metric).as("min" + metric);
+            break;
+          case "sum":
+            groupOperation = groupOperation.sum(metric).as("sum" + metric);
+            break;
+          default:
+            throw new IllegalArgumentException("Unknown stat: " + stat);
+        }
+      }
+    }
+
+    // Add the group operation to the aggregation stages
+    aggregationOperations.add(groupOperation);
+
+    // Build the final aggregation pipeline
+    Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
 
     // Execute aggregation and collect results
     AggregationResults<Map> results;
