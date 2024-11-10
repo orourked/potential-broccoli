@@ -51,7 +51,7 @@ java -jar target/weather-api-1.0.0.jar --server.port=9999
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
   "sensorIds": ["sensor4", "sensor1"],
-  "metrics": ["temperature", "humidity", "pressure"],
+  "metrics": ["temperature", "humidity", "pressure", "windspeed"],
   "stats": ["average", "max", "min"],
   "startDate": "2024-11-02",
   "endDate": "2024-11-08"}' http://localhost:8080/api/weather/query
@@ -71,7 +71,8 @@ following JSON in the body:
   "metrics": [
     "temperature",
     "humidity",
-    "pressure"
+    "pressure",
+    "windspeed"
   ],
   "stats": [
     "average",
@@ -92,28 +93,34 @@ For example:
 ```json
 [
   {
-    "_id": "sensor4",
-    "avgtemperature": 13.0,
-    "maxtemperature": 16,
-    "mintemperature": 10,
-    "avghumidity": 82.1,
-    "maxhumidity": 90,
-    "minhumidity": 77,
-    "avgpressure": 1002.3,
-    "maxpressure": 1021.2,
-    "minpressure": 989.7
+    "_id": "sensor1",
+    "avgTemperature": 22.5,
+    "maxTemperature": 22.5,
+    "minTemperature": 22.5,
+    "avgHumidity": 65.0,
+    "maxHumidity": 65.0,
+    "minHumidity": 65.0,
+    "avgPressure": 1013.0,
+    "maxPressure": 1013.0,
+    "minPressure": 1013.0,
+    "avgWindspeed": 14.5,
+    "maxWindspeed": 14.5,
+    "minWindspeed": 14.5
   },
   {
-    "_id": "sensor1",
-    "avgtemperature": 22.5,
-    "maxtemperature": 22.5,
-    "mintemperature": 22.5,
-    "avghumidity": 65.0,
-    "maxhumidity": 65,
-    "minhumidity": 65,
-    "avgpressure": 1013.0,
-    "maxpressure": 1013,
-    "minpressure": 1013
+    "_id": "sensor4",
+    "avgTemperature": 13.0,
+    "maxTemperature": 16.0,
+    "minTemperature": 10.0,
+    "avgHumidity": 82.1,
+    "maxHumidity": 90.0,
+    "minHumidity": 77.0,
+    "avgPressure": 1002.3,
+    "maxPressure": 1021.2,
+    "minPressure": 989.7,
+    "avgWindspeed": 19.1,
+    "maxWindspeed": 26.0,
+    "minWindspeed": 14.0
   }
 ]
 ```
