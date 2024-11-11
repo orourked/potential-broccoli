@@ -13,7 +13,12 @@ The main application class is `WeatherApiApplication`, run the application from 
 
 ## JAR
 
-Package the source into a jar file using:
+Package the source into a jar file using the Maven-generated `mvnw` script:
+> [!IMPORTANT]  
+> It may be necessary to give the script execute permission before running.
+> ```bash
+> chmod +x ./mvnw
+> ```
 
 ```bash
 ./mvnw clean package

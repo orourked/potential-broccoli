@@ -1,6 +1,9 @@
 package org.orourked.weatherapi.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -13,11 +16,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.orourked.weatherapi.database.WeatherAggregation;
 import org.orourked.weatherapi.database.WeatherDatabase;
 import org.orourked.weatherapi.model.WeatherData;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 class WeatherServiceTest {
   @Mock private WeatherDatabase weatherDatabase;
+  @Mock private WeatherAggregation weatherAggregation;
 
   @InjectMocks private WeatherService weatherService;
 
@@ -87,5 +94,61 @@ class WeatherServiceTest {
     assertEquals(1, result.size());
     assertEquals("New York", result.get(0).getLocation());
     verify(weatherDatabase, times(1)).findByLocation("New York");
+  }
+
+  @Test
+  void testGetAllWeatherDataThrowsException() {
+    // Stub the repository's behavior
+    when(weatherDatabase.findAll()).thenThrow(new RuntimeException("MongoDB connection error"));
+
+    // Call the service
+    ResponseStatusException exception =
+        assertThrows(ResponseStatusException.class, () -> weatherService.getAllWeatherData());
+
+    // Verify and assert
+    assertEquals(HttpStatus.BAD_GATEWAY, exception.getStatusCode());
+  }
+
+  @Test
+  void testGetAllWeatherByLocationThrowsException() {
+    // Stub the repository's behavior
+    when(weatherDatabase.findByLocation(anyString()))
+        .thenThrow(new RuntimeException("MongoDB connection error"));
+
+    // Call the service
+    ResponseStatusException exception =
+        assertThrows(
+            ResponseStatusException.class,
+            () -> weatherService.getWeatherDataByLocation("New York"));
+
+    // Verify and assert
+    assertEquals(HttpStatus.BAD_GATEWAY, exception.getStatusCode());
+  }
+
+  @Test
+  void testBadDateException() {
+    ResponseStatusException exception =
+        assertThrows(
+            ResponseStatusException.class,
+            () -> weatherService.queryWeatherData(List.of(), List.of(), List.of(), "junk", "junk"));
+    assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+  }
+
+  @Test
+  void testBadStatException() {
+    when(weatherAggregation.queryWeatherData(any(), any(), any(), any(), any()))
+        .thenThrow(new IllegalArgumentException("Unknown Stat"));
+
+    ResponseStatusException exception =
+        assertThrows(
+            ResponseStatusException.class,
+            () ->
+                weatherService.queryWeatherData(
+                    List.of("sensor1"),
+                    List.of("temperature"),
+                    List.of("invalid_stat"),
+                    null,
+                    null));
+    assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
   }
 }
