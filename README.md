@@ -6,6 +6,10 @@ RESTful API service that receives weather data from sensors
 
 > [!WARNING]
 > The connection string to the MongoDB cluster is omitted from this source code.
+> However, running `chmod +x setupEnv.sh` and then running `./setupEnv.sh` will set necessary
+> environment variables that will allow connectivity.
+>
+> I know this isn't best practise, but rather for the sake of convenience.
 
 ## From an IDE
 
@@ -36,6 +40,11 @@ port number to run the application other than the default 8080:
 ```bash
 java -jar target/weather-api-1.0.0.jar --server.port=9999
 ```
+
+### Pre-packaged JAR file
+
+Alternatively, use the pre-packaged jar file under
+releases [weather-api-1.0.0.jar](https://github.com/orourked/potential-broccoli/releases/tag/v1.0.0).
 
 # Querying
 
