@@ -4,9 +4,12 @@ RESTful API service that receives weather data from sensors
 
 # Running
 
-> [!WARNING]
+The following instructions are run in a **bash** shell environment, such
+as [Git Bash](https://git-scm.com/downloads).
+
+> [!IMPORTANT]
 > The connection string to the MongoDB cluster is omitted from this source code.
-> However, running `chmod +x setupEnv.sh` and then running `./setupEnv.sh` will set necessary
+> However, running `chmod +x setupEnv.sh` and then running `source ./setupEnv.sh` will set necessary
 > environment variables that will allow connectivity.
 >
 > I know this isn't best practise, but rather for the sake of convenience.
