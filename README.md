@@ -34,20 +34,20 @@ Package the source into a jar file using the Maven-generated `mvnw` script:
 Run the packaged jar file using:
 
 ```bash
-java -jar target/weather-api-1.0.1.jar
+java -jar target/weather-api-1.0.0.jar
 ```
 
 This will create an API endpoint at http://localhost:8080/api/weather/query. Optionally, supply a
 port number to run the application other than the default 8080:
 
 ```bash
-java -jar target/weather-api-1.0.1.jar --server.port=9999
+java -jar target/weather-api-1.0.0.jar --server.port=9999
 ```
 
 ### Pre-packaged JAR file
 
 Alternatively, use the pre-packaged jar file under
-releases [weather-api-1.0.1.jar](https://github.com/orourked/potential-broccoli/releases/tag/v1.0.1).
+releases [weather-api-1.0.0.jar](https://github.com/orourked/potential-broccoli/releases/tag/v1.0.0).
 
 # Querying
 
