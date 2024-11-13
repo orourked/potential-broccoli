@@ -63,7 +63,20 @@ will be http://localhost:8080/api/weather/query, or if a custom port is specifie
 
 # Querying
 
-## Accepted fields
+## Simple queries
+
+The application can be queried to return all the stored weather data, or return all the stored
+weather data for a specific location. The curl queries for these are as follows:
+
+```bash
+curl -X GET http://localhost:8080/api/weather
+
+curl -X GET http://localhost:8080/api/weather/location/Galway
+```
+
+## Complex queries
+
+### Accepted fields
 
 | Key       | Type           | Notes                                                             |
 |-----------|----------------|-------------------------------------------------------------------|
@@ -73,7 +86,7 @@ will be http://localhost:8080/api/weather/query, or if a custom port is specifie
 | startDate | String         | Use the format "YYYY-MM-DD"                                       |
 | endDate   | String         | Use the format "YYYY-MM-DD"                                       |
 
-## Examples
+## Complex Query Examples
 
 ### Using a curl command
 
