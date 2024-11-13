@@ -13,6 +13,7 @@ The script `startApplication.sh` will build a jar file from source and then run 
 following commands to do this:
 
 ```bash
+chmod +x ./mvnw
 chmod +x startApplication.sh
 
 source ./startApplication.sh
