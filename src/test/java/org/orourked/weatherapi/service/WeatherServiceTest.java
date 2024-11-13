@@ -45,7 +45,7 @@ class WeatherServiceTest {
             .setHumidity(65.0)
             .setWindspeed(17.0)
             .setPressure(1013.0)
-            .setTimestamp(String.valueOf(LocalDateTime.now().minusHours(1)));
+            .setTimestamp(LocalDateTime.now().minusHours(1));
 
     WeatherData weatherData2 =
         new WeatherData()
@@ -56,7 +56,7 @@ class WeatherServiceTest {
             .setHumidity(55.0)
             .setWindspeed(22.0)
             .setPressure(1015.0)
-            .setTimestamp(String.valueOf(LocalDateTime.now()));
+            .setTimestamp(LocalDateTime.now());
     List<WeatherData> mockData = Arrays.asList(weatherData1, weatherData2);
 
     // Stub the repository's behavior
@@ -81,7 +81,7 @@ class WeatherServiceTest {
     weatherData1.setHumidity(65.0);
     weatherData1.setWindspeed(17.0);
     weatherData1.setPressure(1013.0);
-    weatherData1.setTimestamp(String.valueOf(LocalDateTime.now().minusHours(1)));
+    weatherData1.setTimestamp(LocalDateTime.now().minusHours(1));
     List<WeatherData> mockData = List.of(weatherData1);
 
     // Stub the repository's behavior

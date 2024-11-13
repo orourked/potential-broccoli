@@ -1,5 +1,6 @@
 package org.orourked.weatherapi.model;
 
+import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -33,7 +34,7 @@ public class WeatherData {
   private double pressure;
 
   // The timestamp of when the weather data was recorded (as a string, typically ISO 8601 format).
-  private String timestamp;
+  private LocalDateTime timestamp;
 
   // Getter for the unique identifier of the weather data record.
   public String getId() {
@@ -148,7 +149,7 @@ public class WeatherData {
   }
 
   // Getter for the timestamp when the weather data was recorded.
-  public String getTimestamp() {
+  public LocalDateTime getTimestamp() {
     return timestamp;
   }
 
@@ -158,7 +159,7 @@ public class WeatherData {
    * @param timestamp the timestamp (typically in ISO 8601 format)
    * @return the current instance of WeatherData (for method chaining)
    */
-  public WeatherData setTimestamp(String timestamp) {
+  public WeatherData setTimestamp(LocalDateTime timestamp) {
     this.timestamp = timestamp;
     return this;
   }

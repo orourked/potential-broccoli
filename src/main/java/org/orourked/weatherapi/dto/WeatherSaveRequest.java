@@ -43,15 +43,8 @@ public class WeatherSaveRequest {
     return pressure;
   }
 
-  public @NotNull(message = "timestamp is required") String getTimestamp() {
-    return timestamp;
-  }
-
   @NotNull(message = "pressure is required")
   private Double pressure;
-
-  @NotNull(message = "timestamp is required")
-  private String timestamp;
 
   public void setSensorId(@NotNull(message = "sensorId is required") String sensorId) {
     this.sensorId = sensorId;
@@ -75,9 +68,5 @@ public class WeatherSaveRequest {
 
   public void setPressure(@NotNull(message = "pressure is required") Double pressure) {
     this.pressure = pressure;
-  }
-
-  public void setTimestamp(@NotNull(message = "timestamp is required") String timestamp) {
-    this.timestamp = timestamp;
   }
 }

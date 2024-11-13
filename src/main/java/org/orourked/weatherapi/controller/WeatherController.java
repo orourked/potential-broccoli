@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,10 +103,6 @@ public class WeatherController {
       @Valid @RequestBody WeatherSaveRequest request, BindingResult bindingResult) {
     try {
       if (bindingResult.hasErrors()) {
-        //        String errorMessage =
-        //            bindingResult.getAllErrors().stream()
-        //                .map(error -> error.getDefaultMessage())
-        //                .collect(Collectors.joining(", "));
         Map<String, String> errorResponse = new HashMap<>();
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
           errorResponse.put("message", fieldError.getDefaultMessage());
@@ -116,8 +111,6 @@ public class WeatherController {
 
         return ResponseEntity.badRequest().body(errorResponse);
       }
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-      LocalDateTime timestamp = LocalDateTime.parse(request.getTimestamp(), formatter);
 
       WeatherData weatherData = new WeatherData();
       weatherData.setSensorId(request.getSensorId());
@@ -126,17 +119,15 @@ public class WeatherController {
       weatherData.setHumidity(request.getHumidity());
       weatherData.setWindspeed(request.getWindspeed());
       weatherData.setPressure(request.getPressure());
-      weatherData.setTimestamp(timestamp.toString());
+      weatherData.setTimestamp(LocalDateTime.now());
       weatherService.saveWeatherData(weatherData);
       String requestJson = objectMapper.writeValueAsString(request);
       logger.info("Received request at {} with body: {}", LocalDateTime.now(), requestJson);
-      // return ResponseEntity.status(HttpStatus.CREATED).body("Weather data saved successfully");
       Map<String, String> successResponse = new HashMap<>();
       successResponse.put("message", "Weather data saved successfully");
       return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
     } catch (Exception e) {
       logger.info("Failed to parse request body", e);
-      // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to save weather data");
       return ResponseEntity.badRequest().body("Failed to save weather data");
     }
   }

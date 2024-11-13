@@ -125,8 +125,7 @@ curl -X POST http://localhost:8080/api/weather/save -H "Content-Type: applicatio
            "temperature": 18.5,
            "humidity": 60,
            "windspeed": 10,
-           "pressure": 1015,
-           "timestamp": "2024-11-13T10:00:00"
+           "pressure": 1015
          }'
 ```
 

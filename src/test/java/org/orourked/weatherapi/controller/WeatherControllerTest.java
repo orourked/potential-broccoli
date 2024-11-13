@@ -28,8 +28,7 @@ class WeatherControllerTest {
           "location": "Galway",
           "temperature": 9.0,
           "humidity": 74.0,
-          "pressure": 1036.0,
-          "timestamp": "2024-11-13T16:00:00"
+          "pressure": 1036.0
        }
       """;
 
@@ -50,8 +49,7 @@ class WeatherControllerTest {
           "temperature": 9.0,
           "humidity": 74.0,
           "pressure": 1036.0,
-          "windspeed": 21.0,
-          "timestamp": "2024-11-13T16:00:00"
+          "windspeed": 21.0
        }
       """;
 
