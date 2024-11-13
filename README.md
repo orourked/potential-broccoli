@@ -130,7 +130,7 @@ curl -X POST http://localhost:8080/api/weather/save -H "Content-Type: applicatio
          }'
 ```
 
-A successful request should give a 201 Created response and the application sgould give the message
+A successful request should give a 201 Created response and the application should give the message
 `Weather data saved successfully`.
 
 The fields shown above are all configured to be required, so if any are omitted, the response type
