@@ -73,19 +73,32 @@ public class WeatherController {
    *     http://localhost:8080/api/weather/query
    */
   @PostMapping("/query")
-  public List<Map> queryWeatherData(@RequestBody WeatherQueryRequest request) {
+  public ResponseEntity<?> queryWeatherData(
+      @Valid @RequestBody WeatherQueryRequest request, BindingResult bindingResult) {
     try {
+      if (bindingResult.hasErrors()) {
+        Map<String, String> errorResponse = new HashMap<>();
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+          errorResponse.put("message", fieldError.getDefaultMessage());
+          logger.error("Validation failed: {}", fieldError.getDefaultMessage());
+        }
+
+        return ResponseEntity.badRequest().body(errorResponse);
+      }
       String requestJson = objectMapper.writeValueAsString(request);
       logger.info("Received request at {} with body: {}", LocalDateTime.now(), requestJson);
     } catch (JsonProcessingException e) {
       logger.error("Failed to parse request body", e);
     }
-    return weatherService.queryWeatherData(
-        request.getSensorIds(),
-        request.getMetrics(),
-        request.getStats(),
-        request.getStartDate(),
-        request.getEndDate());
+    List<Map> results =
+        weatherService.queryWeatherData(
+            request.getSensorIds(),
+            request.getMetrics(),
+            request.getStats(),
+            request.getStartDate(),
+            request.getEndDate());
+
+    return ResponseEntity.ok(results);
   }
 
   /**

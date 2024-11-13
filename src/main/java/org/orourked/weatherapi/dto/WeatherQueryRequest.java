@@ -1,5 +1,6 @@
 package org.orourked.weatherapi.dto;
 
+import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
@@ -9,9 +10,11 @@ import java.util.List;
 public class WeatherQueryRequest {
 
   // List of sensor IDs to filter the weather data.
+  @NotEmpty(message = "At least one sensorId is required")
   private List<String> sensorIds;
 
   // List of metrics (e.g., temperature, humidity) to include in the query.
+  @NotEmpty(message = "At least one metric is required")
   private List<String> metrics;
 
   // List of statistics (e.g., average, max, min) to calculate for the selected metrics.
