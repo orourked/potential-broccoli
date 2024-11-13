@@ -146,7 +146,7 @@ For example:
 ```json
 [
   {
-    "_id": "sensor1",
+    "sensorId": "sensor1",
     "avgTemperature": 22.5,
     "maxTemperature": 22.5,
     "minTemperature": 22.5,
@@ -161,7 +161,7 @@ For example:
     "minWindspeed": 14.5
   },
   {
-    "_id": "sensor4",
+    "sensorId": "sensor4",
     "avgTemperature": 13.0,
     "maxTemperature": 16.0,
     "minTemperature": 10.0,
