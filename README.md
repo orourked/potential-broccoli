@@ -7,16 +7,23 @@ RESTful API service that receives weather data from sensors
 The following instructions are run in a **bash** shell environment, such
 as [Git Bash](https://git-scm.com/downloads).
 
+## All-in-one script
+
+The script `startApplication.sh` will build a jar file from source and then run it. Run the
+following commands to do this:
+
+```bash
+chmod +x startApplication.sh
+
+source ./startApplication.sh
+```
+
 > [!IMPORTANT]
 > The connection string to the MongoDB cluster is omitted from this source code.
-> However, running `chmod +x setupEnv.sh` and then running `source ./setupEnv.sh` will set necessary
-> environment variables that will allow connectivity.
+> However, the previously mentioned script will set necessary environment variables that will allow
+> connectivity.
 >
 > I know this isn't best practise, but rather for the sake of convenience.
-
-## From an IDE
-
-The main application class is `WeatherApiApplication`, run the application from here.
 
 ## JAR
 
@@ -37,8 +44,7 @@ Run the packaged jar file using:
 java -jar target/weather-api-1.0.0.jar
 ```
 
-This will create an API endpoint at http://localhost:8080/api/weather/query. Optionally, supply a
-port number to run the application other than the default 8080:
+Optionally, supply a port number to run the application other than the default 8080:
 
 ```bash
 java -jar target/weather-api-1.0.0.jar --server.port=9999
@@ -48,6 +54,12 @@ java -jar target/weather-api-1.0.0.jar --server.port=9999
 
 Alternatively, use the pre-packaged jar file under
 releases [weather-api-1.0.0.jar](https://github.com/orourked/potential-broccoli/releases/tag/v1.0.0).
+
+# The Endpoint
+
+Whichever approach is used to run the application, when it is running, the API endpoint
+will be http://localhost:8080/api/weather/query, or if a custom port is specified, http://localhost:
+{SPECIFIED_PORT_NUMBER}/api/weather/query
 
 # Querying
 
@@ -101,9 +113,34 @@ following JSON in the body:
 }
 ```
 
-## Expected Results
+# Adding New Metric Data
 
-Results in the response should take the form of an array of JSON objects, each element representing
+Using curl commands like the following (or by using POST queries in Postman) will add new metric
+data:
+
+```bash
+curl -X POST http://localhost:8080/api/weather/save -H "Content-Type: application/json" -d '{
+           "sensorId": "sensor10",
+           "location": "Galway",
+           "temperature": 18.5,
+           "humidity": 60,
+           "windspeed": 10,
+           "pressure": 1015,
+           "timestamp": "2024-11-13T10:00:00"
+         }'
+```
+
+A successful request should give a 201 Created response and the application sgould give the message
+`Weather data saved successfully`.
+
+The fields shown above are all configured to be required, so if any are omitted, the response type
+would be 400 (Bad Request) and the application should give a message such as
+`Validation failed: timestamp is required`.
+
+## Expected Query Results
+
+Results in the query response should take the form of an array of JSON objects, each element
+representing
 the results of the query for a particular sensor.
 For example:
 

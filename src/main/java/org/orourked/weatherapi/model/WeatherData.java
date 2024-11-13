@@ -27,7 +27,7 @@ public class WeatherData {
   private double humidity;
 
   // The windspeed recorded by the sensor (in units such as km/h or mph).
-  private double windspeed;
+  private Double windspeed;
 
   // The atmospheric pressure recorded by the sensor (in hPa or other units).
   private double pressure;
@@ -116,7 +116,7 @@ public class WeatherData {
   }
 
   // Getter for the windspeed recorded by the sensor.
-  public double getWindspeed() {
+  public Double getWindspeed() {
     return windspeed;
   }
 
@@ -126,7 +126,7 @@ public class WeatherData {
    * @param windspeed the windspeed (in units such as km/h or mph)
    * @return the current instance of WeatherData (for method chaining)
    */
-  public WeatherData setWindspeed(double windspeed) {
+  public WeatherData setWindspeed(Double windspeed) {
     this.windspeed = windspeed;
     return this;
   }

@@ -62,4 +62,8 @@ public class WeatherService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format");
     }
   }
+
+  public void saveWeatherData(WeatherData weatherData) {
+    weatherDatabase.save(weatherData);
+  }
 }

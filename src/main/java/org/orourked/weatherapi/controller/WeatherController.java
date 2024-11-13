@@ -2,15 +2,22 @@ package org.orourked.weatherapi.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.orourked.weatherapi.dto.WeatherQueryRequest;
+import org.orourked.weatherapi.dto.WeatherSaveRequest;
 import org.orourked.weatherapi.model.WeatherData;
 import org.orourked.weatherapi.service.WeatherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,5 +86,48 @@ public class WeatherController {
         request.getStats(),
         request.getStartDate(),
         request.getEndDate());
+  }
+
+  /**
+   * Endpoint to save new weather metric data to the database.
+   *
+   * @param request weather data to save.
+   * @return ResponseEntity object with descriptive string and Http response status.
+   *     <p>Example usage:
+   *     <p>curl -X POST http://localhost:8080/api/weather/save -H "Content-Type: application/json"
+   *     -d '{ "sensorId": "sensor10", "location": "Galway", "temperature": 18.5, "humidity": 60,
+   *     "windspeed": 10, "pressure": 1015, "timestamp": "2024-11-13T10:00:00" }'
+   */
+  @PostMapping("/save")
+  public ResponseEntity<String> saveWeatherData(
+      @Valid @RequestBody WeatherSaveRequest request, BindingResult bindingResult) {
+    try {
+      if (bindingResult.hasErrors()) {
+        String errorMessage =
+            bindingResult.getAllErrors().stream()
+                .map(error -> error.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+        logger.error("Validation failed: " + errorMessage);
+        return new ResponseEntity<>("Validation failed: " + errorMessage, HttpStatus.BAD_REQUEST);
+      }
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+      LocalDateTime timestamp = LocalDateTime.parse(request.getTimestamp(), formatter);
+
+      WeatherData weatherData = new WeatherData();
+      weatherData.setSensorId(request.getSensorId());
+      weatherData.setLocation(request.getLocation());
+      weatherData.setTemperature(request.getTemperature());
+      weatherData.setHumidity(request.getHumidity());
+      weatherData.setWindspeed(request.getWindspeed());
+      weatherData.setPressure(request.getPressure());
+      weatherData.setTimestamp(timestamp.toString());
+      weatherService.saveWeatherData(weatherData);
+      String requestJson = objectMapper.writeValueAsString(request);
+      logger.info("Received request at {} with body: {}", LocalDateTime.now(), requestJson);
+      return ResponseEntity.status(HttpStatus.CREATED).body("Weather data saved successfully");
+    } catch (Exception e) {
+      logger.info("Failed to parse request body", e);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to save weather data");
+    }
   }
 }
