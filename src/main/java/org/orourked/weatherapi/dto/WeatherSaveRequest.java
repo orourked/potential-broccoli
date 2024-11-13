@@ -52,4 +52,32 @@ public class WeatherSaveRequest {
 
   @NotNull(message = "timestamp is required")
   private String timestamp;
+
+  public void setSensorId(@NotNull(message = "sensorId is required") String sensorId) {
+    this.sensorId = sensorId;
+  }
+
+  public void setLocation(@NotNull(message = "location is required") String location) {
+    this.location = location;
+  }
+
+  public void setTemperature(@NotNull(message = "temperature is required") Double temperature) {
+    this.temperature = temperature;
+  }
+
+  public void setHumidity(@NotNull(message = "humidity is required") Double humidity) {
+    this.humidity = humidity;
+  }
+
+  public void setWindspeed(@NotNull(message = "windspeed is required") Double windspeed) {
+    this.windspeed = windspeed;
+  }
+
+  public void setPressure(@NotNull(message = "pressure is required") Double pressure) {
+    this.pressure = pressure;
+  }
+
+  public void setTimestamp(@NotNull(message = "timestamp is required") String timestamp) {
+    this.timestamp = timestamp;
+  }
 }

@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.orourked.weatherapi.dto.WeatherQueryRequest;
 import org.orourked.weatherapi.dto.WeatherSaveRequest;
 import org.orourked.weatherapi.model.WeatherData;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -99,16 +100,21 @@ public class WeatherController {
    *     "windspeed": 10, "pressure": 1015, "timestamp": "2024-11-13T10:00:00" }'
    */
   @PostMapping("/save")
-  public ResponseEntity<String> saveWeatherData(
+  public ResponseEntity<Object> saveWeatherData(
       @Valid @RequestBody WeatherSaveRequest request, BindingResult bindingResult) {
     try {
       if (bindingResult.hasErrors()) {
-        String errorMessage =
-            bindingResult.getAllErrors().stream()
-                .map(error -> error.getDefaultMessage())
-                .collect(Collectors.joining(", "));
-        logger.error("Validation failed: " + errorMessage);
-        return new ResponseEntity<>("Validation failed: " + errorMessage, HttpStatus.BAD_REQUEST);
+        //        String errorMessage =
+        //            bindingResult.getAllErrors().stream()
+        //                .map(error -> error.getDefaultMessage())
+        //                .collect(Collectors.joining(", "));
+        Map<String, String> errorResponse = new HashMap<>();
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+          errorResponse.put("message", fieldError.getDefaultMessage());
+          logger.error("Validation failed: {}", fieldError.getDefaultMessage());
+        }
+
+        return ResponseEntity.badRequest().body(errorResponse);
       }
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
       LocalDateTime timestamp = LocalDateTime.parse(request.getTimestamp(), formatter);
@@ -124,10 +130,14 @@ public class WeatherController {
       weatherService.saveWeatherData(weatherData);
       String requestJson = objectMapper.writeValueAsString(request);
       logger.info("Received request at {} with body: {}", LocalDateTime.now(), requestJson);
-      return ResponseEntity.status(HttpStatus.CREATED).body("Weather data saved successfully");
+      // return ResponseEntity.status(HttpStatus.CREATED).body("Weather data saved successfully");
+      Map<String, String> successResponse = new HashMap<>();
+      successResponse.put("message", "Weather data saved successfully");
+      return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
     } catch (Exception e) {
       logger.info("Failed to parse request body", e);
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to save weather data");
+      // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to save weather data");
+      return ResponseEntity.badRequest().body("Failed to save weather data");
     }
   }
 }
