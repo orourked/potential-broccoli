@@ -153,7 +153,13 @@ public class WeatherAggregation {
    */
   private ProjectionOperation createProjectionOperation(
       List<String> metrics, List<String> stats, LocalDate startDate, LocalDate endDate) {
-    ProjectionOperation projectOperation = Aggregation.project("sensorId", "timestamp");
+    ProjectionOperation projectOperation =
+        Aggregation.project()
+            .and("_id")
+            .as("sensorId")
+            .and("timestamp")
+            .as("timestamp")
+            .andExclude("_id");
     for (String metric : metrics) {
       if (startDate != null && endDate != null) {
         for (String stat : stats) {
