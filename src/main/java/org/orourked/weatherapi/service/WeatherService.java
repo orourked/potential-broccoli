@@ -14,7 +14,22 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class WeatherService {
-  @Autowired private WeatherDatabase weatherDatabase;
+  private final WeatherDatabase weatherDatabase;
+  private final WeatherAggregation weatherAggregation;
+
+  @Autowired
+  public WeatherService(WeatherDatabase weatherDatabase, WeatherAggregation weatherAggregation) {
+    this.weatherDatabase = weatherDatabase;
+    this.weatherAggregation = weatherAggregation;
+  }
+
+  private static LocalDate parseDate(String date) {
+    try {
+      return StringUtils.hasText(date) ? LocalDate.parse(date) : null;
+    } catch (Exception e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format");
+    }
+  }
 
   public List<WeatherData> getAllWeatherData() {
     List<WeatherData> allWeatherData;
@@ -36,8 +51,6 @@ public class WeatherService {
     return weatherDataByLocation;
   }
 
-  @Autowired private WeatherAggregation weatherAggregation;
-
   public List<Map> queryWeatherData(
       List<String> sensorIds,
       List<String> metrics,
@@ -52,14 +65,6 @@ public class WeatherService {
       return weatherAggregation.queryWeatherData(sensorIds, metrics, stats, start, end);
     } catch (IllegalArgumentException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid stat");
-    }
-  }
-
-  private static LocalDate parseDate(String date) {
-    try {
-      return StringUtils.hasText(date) ? LocalDate.parse(date) : null;
-    } catch (Exception e) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format");
     }
   }
 
